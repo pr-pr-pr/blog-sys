@@ -70,7 +70,9 @@ export class UsersController {
     if (user) {
       throw new NotAcceptableException('用户名已存在')
     }
-    return await this.userModel.create(userDto)
+    return await this.userModel.create(userDto).catch(err => {
+      throw new BadRequestException(err)
+    })
   }
 
   @Put(':id')
@@ -80,7 +82,9 @@ export class UsersController {
     if (user && String(user._id) !== id) {
       throw new NotAcceptableException('用户名已存在')
     }
-    return await this.userModel.findByIdAndUpdate(id, userDto)
+    return await this.userModel.findByIdAndUpdate(id, userDto).catch(err => {
+      throw new BadRequestException(err)
+    })
   }
 
   @Delete(':id')

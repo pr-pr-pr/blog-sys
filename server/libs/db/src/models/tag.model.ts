@@ -5,10 +5,10 @@ import { Article } from './article.model'
   schemaOptions: { toJSON: { virtuals: true } }
 })
 export class Tag {
-  @prop({ unique: true })
+  @prop({ unique: true, required: true })
   name: string
 
-  @prop()
+  @prop({ required: true })
   description: string
 
   @prop({ ref: 'Article', foreignField: 'tags', localField: '_id' })

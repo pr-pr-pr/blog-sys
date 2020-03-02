@@ -6,18 +6,18 @@ import { Tag } from './tag.model'
   schemaOptions: { timestamps: true, toJSON: { virtuals: true } }
 })
 export class Article {
-  @prop({ unique: true })
+  @prop({ unique: true, required: true })
   title: string
 
-  @prop()
+  @prop({ required: true })
   summary: string
 
-  @prop()
+  @prop({ required: true })
   content: string
 
-  @prop({ ref: 'User' })
+  @prop({ ref: 'User', required: true })
   author: Ref<User>
 
-  @arrayProp({ itemsRef: 'Tag' })
+  @arrayProp({ itemsRef: 'Tag', required: true })
   tags: Ref<Tag>[]
 }

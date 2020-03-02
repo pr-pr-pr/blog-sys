@@ -41,6 +41,11 @@ export class ArticlesController {
     const title = query.title || ''
     const where: WhereArticleDto = {}
     title && (where.title = { $regex: title })
+    const tag = query.tag || ''
+    tag && (where.tags = tag)
+    const author = query.author || ''
+    author && (where.author = author)
+
     const articles = await this.articleModel
       .find()
       .where(where)
@@ -49,7 +54,12 @@ export class ArticlesController {
       .sort({ [sortKey]: sort })
       .populate('author')
       .populate('tags')
-    const total = await this.articleModel.countDocuments(where)
+      .catch(() => {
+        throw new BadRequestException('参数错误')
+      })
+    const total = await this.articleModel.countDocuments(where).catch(() => {
+      throw new BadRequestException('参数错误')
+    })
     return { list: articles, page, limit, total }
   }
 
@@ -72,8 +82,8 @@ export class ArticlesController {
     if (article) {
       throw new NotAcceptableException('文章名已存在')
     }
-    return await this.articleModel.create(articleDto).catch(() => {
-      throw new BadRequestException('参数错误')
+    return await this.articleModel.create(articleDto).catch(err => {
+      throw new BadRequestException(err)
     })
   }
 
@@ -84,7 +94,11 @@ export class ArticlesController {
     if (article && String(article._id) !== id) {
       throw new NotAcceptableException('文章名已存在')
     }
-    return await this.articleModel.findByIdAndUpdate(id, articleDto)
+    return await this.articleModel
+      .findByIdAndUpdate(id, articleDto)
+      .catch(err => {
+        throw new BadRequestException(err)
+      })
   }
 
   @Delete(':id')
