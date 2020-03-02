@@ -1,5 +1,4 @@
 import { prop, arrayProp, modelOptions, Ref } from '@typegoose/typegoose'
-import { Tag } from './tag.model'
 import { Article } from './article.model'
 import { hashSync } from 'bcryptjs'
 
@@ -7,7 +6,7 @@ import { hashSync } from 'bcryptjs'
   schemaOptions: { timestamps: true, toJSON: { virtuals: true } }
 })
 export class User {
-  @prop({ unique: true })
+  @prop({ unique: true, required: true })
   username: string
 
   @prop({
@@ -23,9 +22,6 @@ export class User {
 
   @prop({ default: false })
   isAdmin: boolean
-
-  @arrayProp({ itemsRef: 'Tag' })
-  tags: Ref<Tag>[]
 
   @prop({ ref: 'Article', foreignField: 'author', localField: '_id' })
   articles: Ref<Article>[]

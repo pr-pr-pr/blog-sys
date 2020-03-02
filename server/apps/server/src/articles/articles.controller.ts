@@ -1,27 +1,18 @@
 import {
   Controller,
   Get,
-  Param,
-  BadRequestException,
-  Post,
-  Body,
-  NotAcceptableException,
-  Put,
-  Delete,
   Query,
-  UseGuards
+  Param,
+  BadRequestException
 } from '@nestjs/common'
-import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger'
+import { ApiTags, ApiOperation } from '@nestjs/swagger'
 import { InjectModel } from 'nestjs-typegoose'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { Article } from '@libs/db/models/article.model'
-import { ArticleDto, WhereArticleDto, QueryArticleDto } from './article.dto'
-import { AuthGuard } from '@nestjs/passport'
+import { QueryArticleDto, WhereArticleDto } from './article.dto'
 
 @Controller('articles')
 @ApiTags('文章')
-@ApiBearerAuth()
-@UseGuards(AuthGuard('jwt'))
 export class ArticlesController {
   constructor(
     @InjectModel(Article)
@@ -38,8 +29,8 @@ export class ArticlesController {
     const sort = Number(query.sort) || -1
     const sortKey = query.sortKey || '_id'
     // 搜索
-    const title = query.title || ''
     const where: WhereArticleDto = {}
+    const title = query.title || ''
     title && (where.title = { $regex: title })
     const tag = query.tag || ''
     tag && (where.tags = tag)
@@ -73,40 +64,5 @@ export class ArticlesController {
       .catch(() => {
         throw new BadRequestException('文章不存在')
       })
-  }
-
-  @Post()
-  @ApiOperation({ summary: '创建文章' })
-  async create(@Body() articleDto: ArticleDto) {
-    const article = await this.articleModel.findOne({ title: articleDto.title })
-    if (article) {
-      throw new NotAcceptableException('文章名已存在')
-    }
-    return await this.articleModel.create(articleDto).catch(err => {
-      throw new BadRequestException(err)
-    })
-  }
-
-  @Put(':id')
-  @ApiOperation({ summary: '更新文章' })
-  async update(@Param('id') id: string, @Body() articleDto: ArticleDto) {
-    const article = await this.articleModel.findOne({ name: articleDto.title })
-    if (article && String(article._id) !== id) {
-      throw new NotAcceptableException('文章名已存在')
-    }
-    return await this.articleModel
-      .findByIdAndUpdate(id, articleDto)
-      .catch(err => {
-        throw new BadRequestException(err)
-      })
-  }
-
-  @Delete(':id')
-  @ApiOperation({ summary: '删除文章' })
-  async remove(@Param('id') id: string) {
-    await this.articleModel.findByIdAndRemove(id).catch(() => {
-      throw new BadRequestException('文章不存在')
-    })
-    return { success: true }
   }
 }

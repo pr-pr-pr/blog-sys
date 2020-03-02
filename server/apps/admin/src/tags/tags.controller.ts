@@ -50,7 +50,12 @@ export class TagsController {
       .skip((page - 1) * limit)
       .limit(limit)
       .sort({ [sortKey]: sort })
-    const total = await this.tagModel.countDocuments(where)
+      .catch(() => {
+        throw new BadRequestException('参数错误')
+      })
+    const total = await this.tagModel.countDocuments(where).catch(() => {
+      throw new BadRequestException('参数错误')
+    })
     return { list: tags, page, limit, total }
   }
 
@@ -69,7 +74,9 @@ export class TagsController {
     if (tag) {
       throw new NotAcceptableException('标签名已存在')
     }
-    return await this.tagModel.create(tagDto)
+    return await this.tagModel.create(tagDto).catch(err => {
+      throw new BadRequestException(err)
+    })
   }
 
   @Put(':id')
@@ -79,7 +86,9 @@ export class TagsController {
     if (tag && String(tag._id) !== id) {
       throw new NotAcceptableException('标签名已存在')
     }
-    return await this.tagModel.findByIdAndUpdate(id, tagDto)
+    return await this.tagModel.findByIdAndUpdate(id, tagDto).catch(err => {
+      throw new BadRequestException(err)
+    })
   }
 
   @Delete(':id')
