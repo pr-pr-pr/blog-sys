@@ -1,34 +1,34 @@
-import { prop, arrayProp, modelOptions, Ref } from '@typegoose/typegoose'
-import { Article } from './article.model'
-import { hashSync } from 'bcryptjs'
+import { prop, arrayProp, modelOptions, Ref } from '@typegoose/typegoose';
+import { Article } from './article.model';
+import { hashSync } from 'bcryptjs';
 
 @modelOptions({
-  schemaOptions: { timestamps: true, toJSON: { virtuals: true } }
+  schemaOptions: { timestamps: true, toJSON: { virtuals: true } },
 })
 export class User {
   @prop({ unique: true, required: true })
-  username: string
+  username: string;
 
   @prop({
     select: false,
     get(val) {
-      return val
+      return val;
     },
     set(val) {
-      return val ? hashSync(val) : val
-    }
+      return val ? hashSync(val) : val;
+    },
   })
-  password: string
+  password: string;
 
   @prop({ default: false })
-  isAdmin: boolean
+  isAdmin: boolean;
 
   @prop({ ref: 'Article', foreignField: 'author', localField: '_id' })
-  articles: Ref<Article>[]
+  articles: Ref<Article>[];
 
   @prop()
-  avatar: string
+  avatar: string;
 
   @prop()
-  summary: string
+  summary: string;
 }
