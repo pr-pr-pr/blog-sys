@@ -16,7 +16,6 @@ import { InjectModel } from 'nestjs-typegoose'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { Article } from '@libs/db/models/article.model'
 import { ArticleDto, WhereArticleDto, QueryArticleDto } from './article.dto'
-import { User } from '@libs/db/models/user.model'
 import { AuthGuard } from '@nestjs/passport'
 
 @Controller('articles')
@@ -26,9 +25,7 @@ import { AuthGuard } from '@nestjs/passport'
 export class ArticlesController {
   constructor(
     @InjectModel(Article)
-    private readonly articleModel: ReturnModelType<typeof Article>,
-    @InjectModel(User)
-    private readonly userModel: ReturnModelType<typeof User>
+    private readonly articleModel: ReturnModelType<typeof Article>
   ) {}
 
   @Get()
