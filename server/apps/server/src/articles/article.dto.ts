@@ -1,21 +1,21 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { PaginateDto } from '@app/common/dto/paginate.dto';
+import { ApiProperty } from '@nestjs/swagger'
+import { PaginateDto } from '@app/common/dto/paginate.dto'
 
 export class QueryArticleDto extends PaginateDto {
   @ApiProperty({ description: '搜索文章标题关键字', required: false })
-  title?: string;
+  title?: string
 
   @ApiProperty({ description: '根据标签ID筛选', required: false })
-  tag?: string;
+  tag?: string
 
   @ApiProperty({ description: '根据用户ID筛选', required: false })
-  author?: string;
+  author?: string
 }
 
 export class WhereArticleDto {
-  title?: string | { $regex: string };
+  title?: string | { $regex: string }
 
-  tags?: string;
+  tags?: string
 
-  author?: string;
+  author?: string
 }
