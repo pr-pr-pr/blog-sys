@@ -1,4 +1,4 @@
-import { prop, arrayProp, modelOptions, Ref } from '@typegoose/typegoose'
+import { prop, modelOptions, Ref } from '@typegoose/typegoose'
 import { Article } from './article.model'
 import { hashSync } from 'bcryptjs'
 
@@ -6,11 +6,13 @@ import { hashSync } from 'bcryptjs'
   schemaOptions: { timestamps: true, toJSON: { virtuals: true } }
 })
 export class User {
-  @prop({ unique: true, required: true })
+  @prop({ unique: true, required: true, min: 3, max: 32 })
   username: string
 
   @prop({
     select: false,
+    min: 3,
+    max: 32,
     get(val) {
       return val
     },
