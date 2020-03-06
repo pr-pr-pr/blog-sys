@@ -1,4 +1,4 @@
-import { prop, arrayProp, modelOptions, Ref } from '@typegoose/typegoose'
+import { prop, modelOptions, Ref } from '@typegoose/typegoose'
 import { Article } from './article.model'
 import { hashSync } from 'bcryptjs'
 
