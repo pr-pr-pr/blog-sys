@@ -9,19 +9,13 @@ import {
 } from '@nestjs/common'
 import { ApiOperation, ApiTags, ApiBearerAuth } from '@nestjs/swagger'
 import { LoginDto } from '@app/common/dto/login.dto'
-import { InjectModel } from 'nestjs-typegoose'
-import { User } from '@libs/db/models/user.model'
-import { ReturnModelType } from '@typegoose/typegoose'
 import { AuthGuard } from '@nestjs/passport'
 import { JwtService } from '@nestjs/jwt'
 
 @Controller('auth')
-@ApiTags('用户')
+@ApiTags('鉴权')
 export class AuthController {
-  constructor(
-    private readonly jwtService: JwtService,
-    @InjectModel(User) private readonly userModel: ReturnModelType<typeof User>
-  ) {}
+  constructor(private readonly jwtService: JwtService) {}
 
   @Post('login')
   @ApiOperation({ summary: '登陆' })

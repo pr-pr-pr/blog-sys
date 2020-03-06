@@ -6,13 +6,11 @@ import { hashSync } from 'bcryptjs'
   schemaOptions: { timestamps: true, toJSON: { virtuals: true } }
 })
 export class User {
-  @prop({ unique: true, required: true, min: 3, max: 32 })
+  @prop({ unique: true, required: true })
   username: string
 
   @prop({
     select: false,
-    min: 3,
-    max: 32,
     get(val) {
       return val
     },
