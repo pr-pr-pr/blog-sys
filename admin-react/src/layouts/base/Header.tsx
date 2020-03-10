@@ -32,9 +32,10 @@ const Header: React.SFC<HeaderProps> = ({ info }) => {
 
   return (
     <Layout.Header id="header">
+      {dateToText()}
       <Dropdown overlay={menu} trigger={['click']}>
         <Button type="link">
-          {dateToText()}，{info.username}
+          {info.username}
           <DownOutlined />
         </Button>
       </Dropdown>

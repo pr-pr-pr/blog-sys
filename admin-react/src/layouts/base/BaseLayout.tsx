@@ -22,7 +22,13 @@ export default () => {
                 render={() => {
                   const Content = route.component as React.SFC;
                   return (
-                    <Card className="card" title={route.title} bordered={false} headStyle={{ fontWeight: 'bold' }}>
+                    <Card
+                      className="card"
+                      title={route.title}
+                      bordered={false}
+                      headStyle={{ fontWeight: 'bold' }}
+                      bodyStyle={{ flex: 1 }}
+                    >
                       <Content />
                     </Card>
                   );

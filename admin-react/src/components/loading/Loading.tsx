@@ -1,5 +1,10 @@
 import React from 'react';
+import { Spin } from 'antd';
 
 export default () => {
-  return <div>Loading...</div>;
+  return (
+    <div id="loading">
+      <Spin />
+    </div>
+  );
 };
