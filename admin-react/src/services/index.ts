@@ -8,7 +8,7 @@ export async function loginService(username: string, password: string) {
   return username;
 }
 
-export async function getUserInfoService() {
+export async function getInfoService() {
   const resp: InfoState = await request.get('/auth/user');
   return {
     isAdmin: resp.isAdmin,

@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import BaseLayout from './layouts/base/BaseLayout';
 import { mainRoutes } from './routes';
 import './less/main.less';
-import { updateUserInfoAsync } from './store/info/actions';
+import { updateInfoAsync } from './store/info/actions';
 
 interface AppProps {
-  updateUserInfoAsync: any;
+  updateUserInfoAsync: Function;
 }
 
 const App: React.SFC<AppProps> = ({ updateUserInfoAsync }) => {
@@ -33,4 +33,4 @@ const App: React.SFC<AppProps> = ({ updateUserInfoAsync }) => {
   );
 };
 
-export default connect(null, { updateUserInfoAsync })(App);
+export default connect(null, { updateUserInfoAsync: updateInfoAsync })(App);

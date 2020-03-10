@@ -1,0 +1,15 @@
+import { GetUserListParams } from './../../services/user';
+import { Action } from 'redux';
+import { AppState } from '../index';
+import { ThunkAction } from 'redux-thunk';
+import { UserListState, UPDATE_USER_LIST } from './types';
+import { getUserList } from '../../services/user';
+
+const updateUserList = (payload: UserListState) => ({ type: UPDATE_USER_LIST, payload });
+
+export const updateUserListAsync = (
+  params: GetUserListParams
+): ThunkAction<void, AppState, null, Action> => async dispatch => {
+  const userList = await getUserList(params);
+  dispatch(updateUserList(userList));
+};

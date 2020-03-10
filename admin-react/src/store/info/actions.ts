@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-import { loginService, getUserInfoService } from '../../services';
+import { loginService, getInfoService } from '../../services';
 import { AppState } from '../index';
 import { InfoState, UPDATE_INFO } from './types';
 
@@ -13,7 +13,7 @@ export const loginAsync = (
   await loginService(username, password);
 };
 
-export const updateUserInfoAsync = (): ThunkAction<void, AppState, null, Action<string>> => async dispatch => {
-  const info = await getUserInfoService();
+export const updateInfoAsync = (): ThunkAction<void, AppState, null, Action> => async dispatch => {
+  const info = await getInfoService();
   dispatch(updateInfo(info));
 };
