@@ -22,11 +22,12 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
   response => response.data,
   error => {
-    const { data } = error.response;
-    if (data && data.message) {
-      message.error(data.message);
-      return Promise.reject(data);
+    const res = error.response;
+    if (res && res.data && res.data.message) {
+      message.error(res.data.message);
+      return Promise.reject(res.data);
     }
+    message.error('网络错误');
     return Promise.reject(error);
   }
 );
