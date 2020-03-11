@@ -1,5 +1,6 @@
 import request from '../utils/request';
 import { dateFormat } from '../utils/date';
+import { paramsFilter } from '../utils/filters';
 
 export interface LoginParamTypes {
   username: string;
@@ -7,7 +8,7 @@ export interface LoginParamTypes {
 }
 
 export async function loginService(params: LoginParamTypes) {
-  const { token } = await request.post('/auth/login', params);
+  const { token } = await request.post('/auth/login', { params: paramsFilter(params) });
   localStorage.setItem('token', token);
 }
 

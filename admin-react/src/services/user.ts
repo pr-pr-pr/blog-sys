@@ -1,6 +1,7 @@
 import { GetInfoResultTypes } from './index';
 import request from '../utils/request';
 import { dateFormat } from '../utils/date';
+import { paramsFilter } from '../utils/filters';
 
 export interface GetUserListParamTypes extends Pagination {
   mode?: 'all' | undefined;
@@ -15,7 +16,7 @@ export interface GetUserListResultTypes {
 }
 
 export async function getUserListService(params?: GetUserListParamTypes): Promise<GetUserListResultTypes> {
-  const res: GetUserListResultTypes = await request.get('/users', { params });
+  const res: GetUserListResultTypes = await request.get('/users', { params: paramsFilter(params) });
   return {
     list: res.list.map((i: GetInfoResultTypes) => ({
       isAdmin: i.isAdmin,
