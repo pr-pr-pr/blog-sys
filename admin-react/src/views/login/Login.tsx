@@ -2,24 +2,15 @@ import React from 'react';
 import { Card, Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { loginAsync } from '../../store/info/actions';
+import { loginService, LoginParamTypes } from '../../services';
 
-interface LoginParamTypes {
-  username: string;
-  password: string;
-}
-
-interface LoginProps {
-  loginAsync: any;
-}
-
-const Login: React.SFC<LoginProps> = ({ loginAsync }) => {
+const Login: React.FC = () => {
   localStorage.clear();
   const history = useHistory();
 
   const submit = async (values: LoginParamTypes) => {
-    await loginAsync(values.username, values.password);
+    await loginService(values);
+    console.log(localStorage.getItem('token'));
     message.success('登录成功');
     history.push('/admin');
   };
@@ -59,4 +50,4 @@ const Login: React.SFC<LoginProps> = ({ loginAsync }) => {
   );
 };
 
-export default connect(null, { loginAsync })(Login);
+export default Login;

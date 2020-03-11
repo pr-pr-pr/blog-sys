@@ -1,21 +1,16 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useEffect } from 'react';
 import { Table, Col, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { AppState } from '../../store';
-import { UserListState } from '../../store/user/types';
-import { updateUserListAsync } from '../../store/user/actions';
-import { GetUserListParams } from '../../services/user';
+import { getUserListService, GetUserListResultTypes } from '../../services/user';
+import UserAdd from './UserAdd';
 
-interface UserListProps {
-  userList: UserListState;
-  updateUserListAsync: (params?: GetUserListParams) => void;
-}
+const UserList: React.FC = () => {
+  const [tableData, setTableData] = useState({} as GetUserListResultTypes);
+  const [addModalVisible, setAddModalVisible] = useState(false);
 
-const UserList: React.SFC<UserListProps> = ({ userList, updateUserListAsync }) => {
   useEffect(() => {
-    updateUserListAsync({});
-  }, [updateUserListAsync]);
+    getUserListService().then(res => setTableData(res));
+  }, []);
 
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
@@ -26,21 +21,25 @@ const UserList: React.SFC<UserListProps> = ({ userList, updateUserListAsync }) =
     { title: '更新时间', dataIndex: 'updatedAt', key: 'updatedAt' }
   ];
 
+  const openAddModal = () => {
+    setAddModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setAddModalVisible(false);
+  };
+
   return (
     <div>
       <Col>
-        <Button type="primary">
+        <Button type="primary" onClick={openAddModal}>
           <PlusOutlined />
         </Button>
       </Col>
-      <Table dataSource={userList.list} columns={columns} rowKey="id" size="small" />
+      <Table dataSource={tableData.list} columns={columns} rowKey="id" size="small" />
+      <UserAdd visible={addModalVisible} close={closeModal} />
     </div>
   );
 };
 
-export default connect(
-  (state: AppState) => ({
-    userList: state.user.userList
-  }),
-  { updateUserListAsync }
-)(UserList);
+export default UserList;

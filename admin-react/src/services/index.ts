@@ -1,15 +1,28 @@
 import request from '../utils/request';
-import { InfoState } from '../store/info/types';
 import { dateFormat } from '../utils/date';
 
-export async function loginService(username: string, password: string) {
-  const { token } = await request.post('/auth/login', { username, password });
+export interface LoginParamTypes {
+  username: string;
+  password: string;
+}
+
+export async function loginService(params: LoginParamTypes) {
+  const { token } = await request.post('/auth/login', params);
   localStorage.setItem('token', token);
-  return username;
+}
+
+export interface GetInfoResultTypes {
+  isAdmin: boolean;
+  id: string;
+  username: string;
+  avatar: string;
+  summary: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export async function getInfoService() {
-  const resp: InfoState = await request.get('/auth/user');
+  const resp: GetInfoResultTypes = await request.get('/auth/user');
   return {
     isAdmin: resp.isAdmin,
     id: resp.id,
@@ -18,5 +31,5 @@ export async function getInfoService() {
     summary: resp.summary,
     createdAt: dateFormat(resp.createdAt),
     updatedAt: dateFormat(resp.updatedAt)
-  } as InfoState;
+  } as GetInfoResultTypes;
 }

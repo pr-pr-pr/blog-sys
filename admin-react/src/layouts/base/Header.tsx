@@ -10,7 +10,7 @@ interface HeaderProps {
   info: InfoState;
 }
 
-const Header: React.SFC<HeaderProps> = ({ info }) => {
+const Header: React.FC<HeaderProps> = ({ info }) => {
   const menu = (
     <Menu>
       <Menu.Item>

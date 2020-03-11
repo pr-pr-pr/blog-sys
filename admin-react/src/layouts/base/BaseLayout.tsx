@@ -20,7 +20,7 @@ export default () => {
                 path={route.path}
                 exact={route.exact}
                 render={() => {
-                  const Content = route.component as React.SFC;
+                  const Content = route.component as React.FC;
                   return (
                     <Card
                       className="card"

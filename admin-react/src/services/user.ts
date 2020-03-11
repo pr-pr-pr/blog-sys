@@ -1,16 +1,23 @@
-import { UserListState, User } from '../store/user/types';
+import { GetInfoResultTypes } from './index';
 import request from '../utils/request';
 import { dateFormat } from '../utils/date';
 
-export interface GetUserListParams extends Pagination {
+export interface GetUserListParamTypes extends Pagination {
   mode?: 'all' | undefined;
   username?: string;
 }
 
-export async function getUserList(params?: GetUserListParams) {
-  const resp: UserListState = await request.get('/users', { params });
+export interface GetUserListResultTypes {
+  list: GetInfoResultTypes[];
+  page: number;
+  limit: number;
+  total: number;
+}
+
+export async function getUserListService(params?: GetUserListParamTypes) {
+  const resp: GetUserListResultTypes = await request.get('/users', { params });
   return {
-    list: resp.list.map(i => {
+    list: resp.list.map((i: any) => {
       return {
         isAdmin: i.isAdmin,
         id: i.id,
@@ -19,10 +26,10 @@ export async function getUserList(params?: GetUserListParams) {
         summary: i.summary,
         createdAt: dateFormat(i.createdAt),
         updatedAt: dateFormat(i.updatedAt)
-      } as User;
+      };
     }),
     page: resp.page,
     limit: resp.limit,
     total: resp.total
-  } as UserListState;
+  } as GetUserListResultTypes;
 }

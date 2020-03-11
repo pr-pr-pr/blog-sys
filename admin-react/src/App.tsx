@@ -4,23 +4,26 @@ import { connect } from 'react-redux';
 import BaseLayout from './layouts/base/BaseLayout';
 import { mainRoutes } from './routes';
 import './less/main.less';
-import { updateInfoAsync } from './store/info/actions';
+import { getInfoService } from './services';
+import { updateInfo } from './store/info/actions';
 
 interface AppProps {
-  updateInfoAsync: () => void;
+  updateInfo: typeof updateInfo;
 }
 
-const App: React.SFC<AppProps> = ({ updateInfoAsync }) => {
-  const isLogin = !!localStorage.getItem('token');
-  if (isLogin) {
-    updateInfoAsync();
-  }
+const App: React.FC<AppProps> = ({ updateInfo }) => {
+  let sw = true;
   return (
     <Switch>
       <Route
         path="/admin"
         render={() => {
+          const isLogin = !!localStorage.getItem('token');
           if (isLogin) {
+            if (sw) {
+              sw = false;
+              getInfoService().then(res => updateInfo(res));
+            }
             return <BaseLayout />;
           } else {
             return <Redirect to="/login" />;
@@ -36,4 +39,4 @@ const App: React.SFC<AppProps> = ({ updateInfoAsync }) => {
   );
 };
 
-export default connect(null, { updateInfoAsync })(App);
+export default connect(null, { updateInfo })(App);
