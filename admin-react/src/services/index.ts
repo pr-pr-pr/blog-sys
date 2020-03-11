@@ -21,15 +21,15 @@ export interface GetInfoResultTypes {
   updatedAt: string;
 }
 
-export async function getInfoService() {
-  const resp: GetInfoResultTypes = await request.get('/auth/user');
+export async function getInfoService(): Promise<GetInfoResultTypes> {
+  const res: GetInfoResultTypes = await request.get('/auth/user');
   return {
-    isAdmin: resp.isAdmin,
-    id: resp.id,
-    username: resp.username,
-    avatar: resp.avatar,
-    summary: resp.summary,
-    createdAt: dateFormat(resp.createdAt),
-    updatedAt: dateFormat(resp.updatedAt)
-  } as GetInfoResultTypes;
+    isAdmin: res.isAdmin,
+    id: res.id,
+    username: res.username,
+    avatar: res.avatar,
+    summary: res.summary,
+    createdAt: dateFormat(res.createdAt),
+    updatedAt: dateFormat(res.updatedAt)
+  };
 }

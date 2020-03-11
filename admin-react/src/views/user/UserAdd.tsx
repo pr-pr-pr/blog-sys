@@ -1,19 +1,15 @@
 import React from 'react';
 import { Modal, Form, Input, Button } from 'antd';
 
-interface UserAddParamTypes {
-  username?: string;
-  password?: string;
-}
-
 interface UserAddProps {
   visible: boolean;
   close: () => void;
 }
 
 const UserAdd: React.FC<UserAddProps> = ({ visible, close }) => {
-  const submit = async (params: UserAddParamTypes) => {
+  const submit = async (values: any) => {
     // await
+    console.log(values);
   };
 
   const handleCancel = () => {
@@ -44,6 +40,15 @@ const UserAdd: React.FC<UserAddProps> = ({ visible, close }) => {
           ]}
         >
           <Input.Password />
+        </Form.Item>
+        <Form.Item label="角色" name="isAdmin">
+          <Input />
+        </Form.Item>
+        <Form.Item label="简介" name="summary">
+          <Input />
+        </Form.Item>
+        <Form.Item label="头像" name="avatar">
+          <Input />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 4 }}>
           <Button type="primary" htmlType="submit">

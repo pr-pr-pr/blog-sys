@@ -14,22 +14,32 @@ export interface GetUserListResultTypes {
   total: number;
 }
 
-export async function getUserListService(params?: GetUserListParamTypes) {
-  const resp: GetUserListResultTypes = await request.get('/users', { params });
+export async function getUserListService(params?: GetUserListParamTypes): Promise<GetUserListResultTypes> {
+  const res: GetUserListResultTypes = await request.get('/users', { params });
   return {
-    list: resp.list.map((i: any) => {
-      return {
-        isAdmin: i.isAdmin,
-        id: i.id,
-        username: i.username,
-        avatar: i.avatar,
-        summary: i.summary,
-        createdAt: dateFormat(i.createdAt),
-        updatedAt: dateFormat(i.updatedAt)
-      };
-    }),
-    page: resp.page,
-    limit: resp.limit,
-    total: resp.total
-  } as GetUserListResultTypes;
+    list: res.list.map((i: GetInfoResultTypes) => ({
+      isAdmin: i.isAdmin,
+      id: i.id,
+      username: i.username,
+      avatar: i.avatar,
+      summary: i.summary,
+      createdAt: dateFormat(i.createdAt),
+      updatedAt: dateFormat(i.updatedAt)
+    })),
+    page: res.page,
+    limit: res.limit,
+    total: res.total
+  };
+}
+
+export interface AddUserService {
+  username: string;
+  password: string;
+  isAdmin: boolean;
+  avatar?: string;
+  summary?: string;
+}
+
+export async function addUserService(params: AddUserService) {
+  await request.post('/users', params);
 }
