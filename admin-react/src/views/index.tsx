@@ -14,14 +14,14 @@ export const Welcome = loadable(() => import('./welcome/Welcome'), {
   fallback: <Loading />
 });
 
-export const UserList = loadable(() => import('./user/UserList'), {
+export const User = loadable(() => import('./user/User'), {
   fallback: <Loading />
 });
 
-export const ArticleList = loadable(() => import('./article/ArticleList'), {
+export const Article = loadable(() => import('./article/Article'), {
   fallback: <Loading />
 });
 
-export const TagList = loadable(() => import('./tag/TagList'), {
+export const Tag = loadable(() => import('./tag/Tag'), {
   fallback: <Loading />
 });

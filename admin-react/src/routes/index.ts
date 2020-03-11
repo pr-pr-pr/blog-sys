@@ -1,4 +1,4 @@
-import { Login, NotFound, Welcome, UserList, ArticleList, TagList } from '../views/index';
+import { Login, NotFound, Welcome, User, Article, Tag } from '../views/index';
 import { RouteProps } from 'react-router-dom';
 import { HomeOutlined, UserOutlined, FileTextOutlined, TagsOutlined } from '@ant-design/icons';
 
@@ -14,7 +14,7 @@ export const mainRoutes: RouteProps[] = [
 
 export const adminRoutes: IRoute[] = [
   { path: '/admin/welcome', component: Welcome, exact: true, title: '欢迎', icon: HomeOutlined },
-  { path: '/admin/user/list', component: UserList, exact: true, title: '用户', icon: UserOutlined },
-  { path: '/admin/article/list', component: ArticleList, exact: true, title: '文章', icon: FileTextOutlined },
-  { path: '/admin/tag/list', component: TagList, exact: true, title: '标签', icon: TagsOutlined }
+  { path: '/admin/user', component: User, exact: true, title: '用户管理', icon: UserOutlined },
+  { path: '/admin/article', component: Article, exact: true, title: '文章管理', icon: FileTextOutlined },
+  { path: '/admin/tag', component: Tag, exact: true, title: '标签管理', icon: TagsOutlined }
 ];

@@ -7,17 +7,20 @@ import './less/main.less';
 import { updateInfoAsync } from './store/info/actions';
 
 interface AppProps {
-  updateUserInfoAsync: Function;
+  updateInfoAsync: () => void;
 }
 
-const App: React.SFC<AppProps> = ({ updateUserInfoAsync }) => {
+const App: React.SFC<AppProps> = ({ updateInfoAsync }) => {
+  const isLogin = !!localStorage.getItem('token');
+  if (isLogin) {
+    updateInfoAsync();
+  }
   return (
     <Switch>
       <Route
         path="/admin"
         render={() => {
-          if (localStorage.getItem('token')) {
-            updateUserInfoAsync();
+          if (isLogin) {
             return <BaseLayout />;
           } else {
             return <Redirect to="/login" />;
@@ -33,4 +36,4 @@ const App: React.SFC<AppProps> = ({ updateUserInfoAsync }) => {
   );
 };
 
-export default connect(null, { updateUserInfoAsync: updateInfoAsync })(App);
+export default connect(null, { updateInfoAsync })(App);

@@ -17,13 +17,20 @@ export interface UserListState {
 
 export interface UserState {
   userList: UserListState;
+  loading: boolean;
 }
 
 export const UPDATE_USER_LIST = 'UPDATE_USER_LIST';
+export const UPDATE_USER_LIST_LOADING = 'UPDATE_USER_LIST_LOADING';
 
 interface UpdateUserListAction {
   type: typeof UPDATE_USER_LIST;
   payload: UserListState;
 }
 
-export type UserActionTypes = UpdateUserListAction;
+interface UpdateUserListLoadingAction {
+  type: typeof UPDATE_USER_LIST_LOADING;
+  payload: boolean;
+}
+
+export type UserActionTypes = UpdateUserListAction | UpdateUserListLoadingAction;

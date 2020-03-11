@@ -6,7 +6,8 @@ const initState: UserState = {
     page: 1,
     limit: 10,
     total: 0
-  }
+  },
+  loading: false
 };
 
 export function userReducer(state = initState, action: UserActionTypes): UserState {

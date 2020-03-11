@@ -22,11 +22,11 @@ const Header: React.SFC<HeaderProps> = ({ info }) => {
   const dateToText = () => {
     const D = new Date();
     const hour = D.getHours();
-    if (hour > 22 || hour < 5) return '深夜了，注意休息哦';
-    if (hour > 20) return '晚上好';
-    if (hour > 13) return '下午好';
-    if (hour > 10) return '中午好';
-    if (hour > 4) return '早上好';
+    if (hour > 22 || hour < 5) return '深夜了，注意休息哦~';
+    if (hour > 20) return '晚上好~';
+    if (hour > 13) return '下午好~';
+    if (hour > 10) return '中午好~';
+    if (hour > 4) return '早上好~';
     return 'hello';
   };
 

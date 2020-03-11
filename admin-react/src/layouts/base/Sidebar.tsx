@@ -6,11 +6,12 @@ import { adminRoutes } from '../../routes';
 
 export default () => {
   const history = useHistory();
-  const location = useLocation();
+  const { pathname } = useLocation();
   const [menuKey, setMenuKey] = useState(adminRoutes[0].path as string);
+
   useEffect(() => {
-    setMenuKey(location.pathname);
-  }, [location]);
+    setMenuKey(pathname);
+  }, [pathname]);
 
   return (
     <Layout.Sider id="sidebar" theme="light">
@@ -21,6 +22,7 @@ export default () => {
         </div>
         <Menu
           className="menu"
+          mode="inline"
           selectedKeys={[menuKey]}
           onClick={({ key }) => {
             setMenuKey(key);
@@ -28,7 +30,7 @@ export default () => {
           }}
         >
           {adminRoutes.map(route => (
-            <Menu.Item key={String(route.path)}>
+            <Menu.Item key={route.path as string}>
               <route.icon />
               {route.title}
             </Menu.Item>
