@@ -1,4 +1,4 @@
-declare interface Pagination {
+declare interface CommonQueryParams {
   page?: number;
   limit?: number;
   sort?: number;

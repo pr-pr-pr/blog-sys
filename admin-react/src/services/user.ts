@@ -3,7 +3,7 @@ import request from '../utils/request';
 import { dateFormat } from '../utils/date';
 import { paramsFilter } from '../utils/filters';
 
-export interface GetUserListParamTypes extends Pagination {
+export interface GetUserListParamTypes extends CommonQueryParams {
   mode?: 'all' | undefined;
   username?: string;
 }
