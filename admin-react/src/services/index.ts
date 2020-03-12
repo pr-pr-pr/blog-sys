@@ -8,7 +8,7 @@ export interface LoginParamTypes {
 }
 
 export async function loginService(params: LoginParamTypes) {
-  const { token } = await request.post('/auth/login', { params: paramsFilter(params) });
+  const { token } = await request.post('auth/login', { params: paramsFilter(params) });
   localStorage.setItem('token', token);
 }
 
@@ -23,7 +23,7 @@ export interface GetInfoResultTypes {
 }
 
 export async function getInfoService(): Promise<GetInfoResultTypes> {
-  const res: GetInfoResultTypes = await request.get('/auth/user');
+  const res: GetInfoResultTypes = await request.get('auth/user');
   return {
     isAdmin: res.isAdmin,
     id: res.id,
@@ -33,4 +33,11 @@ export async function getInfoService(): Promise<GetInfoResultTypes> {
     createdAt: dateFormat(res.createdAt),
     updatedAt: dateFormat(res.updatedAt)
   };
+}
+
+export async function uploadService(file: any) {
+  const fd = new FormData();
+  fd.append('file', file);
+  const res: { path: string } = await request.post('upload', fd);
+  return res.path;
 }

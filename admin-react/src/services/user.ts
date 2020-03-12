@@ -8,17 +8,10 @@ export interface GetUserListParamTypes extends Pagination {
   username?: string;
 }
 
-export interface GetUserListResultTypes {
-  list: GetInfoResultTypes[];
-  page: number;
-  limit: number;
-  total: number;
-}
-
-export async function getUserListService(params?: GetUserListParamTypes): Promise<GetUserListResultTypes> {
-  const res: GetUserListResultTypes = await request.get('/users', { params: paramsFilter(params) });
+export async function getUserListService(params?: GetUserListParamTypes): Promise<TableData<GetInfoResultTypes>> {
+  const res: TableData<GetInfoResultTypes> = await request.get('users', { params: paramsFilter(params) });
   return {
-    list: res.list.map((i: GetInfoResultTypes) => ({
+    list: res.list.map(i => ({
       isAdmin: i.isAdmin,
       id: i.id,
       username: i.username,
@@ -33,7 +26,7 @@ export async function getUserListService(params?: GetUserListParamTypes): Promis
   };
 }
 
-export interface AddUserService {
+export interface AddUserParamTypes {
   username: string;
   password: string;
   isAdmin: boolean;
@@ -41,6 +34,6 @@ export interface AddUserService {
   summary?: string;
 }
 
-export async function addUserService(params: AddUserService) {
-  await request.post('/users', params);
+export async function addUserService(params: AddUserParamTypes) {
+  await request.post('users', params);
 }

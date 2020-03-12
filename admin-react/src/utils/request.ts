@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { message } from 'antd';
-
-const uri = process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:5000' : '';
+import { SERVER_HOST } from '../config';
 
 // Axios 实例
 const service = axios.create({
-  baseURL: uri,
+  baseURL: SERVER_HOST,
   timeout: 10 * 1000
 });
 
