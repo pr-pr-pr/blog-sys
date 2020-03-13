@@ -2,15 +2,21 @@ import React from 'react';
 import { Card, Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { loginService, LoginParamTypes } from '../../services';
+import { clearInfo } from '../../store/info/actions';
 
-const Login: React.FC = () => {
+interface LoginProps {
+  clearInfo: () => void;
+}
+
+const Login: React.FC<LoginProps> = ({ clearInfo }) => {
   localStorage.clear();
+  clearInfo();
   const history = useHistory();
 
   const submit = async (values: LoginParamTypes) => {
     await loginService(values);
-    console.log(localStorage.getItem('token'));
     message.success('登录成功');
     history.push('/admin');
   };
@@ -50,4 +56,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default connect(null, { clearInfo })(Login);

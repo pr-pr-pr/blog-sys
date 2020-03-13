@@ -26,7 +26,7 @@ export async function getUserListService(params?: GetUserListParamTypes): Promis
   };
 }
 
-export interface AddUserParamTypes {
+export interface UserParamTypes {
   username: string;
   password: string;
   isAdmin: boolean;
@@ -34,6 +34,23 @@ export interface AddUserParamTypes {
   summary?: string;
 }
 
-export async function addUserService(params: AddUserParamTypes) {
-  await request.post('users', params);
+export async function addUserService(params: UserParamTypes) {
+  await request.post('users', paramsFilter(params));
+}
+
+export async function getUserDetail(id: string): Promise<GetInfoResultTypes> {
+  const res: GetInfoResultTypes = await request.get('users/' + id);
+  return {
+    isAdmin: res.isAdmin,
+    id: res.id,
+    username: res.username,
+    avatar: res.avatar,
+    summary: res.summary,
+    createdAt: res.createdAt,
+    updatedAt: res.updatedAt
+  };
+}
+
+export async function updateUserService(id: string, params: UserParamTypes) {
+  await request.put('users/' + id, paramsFilter(params));
 }

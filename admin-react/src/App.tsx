@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import BaseLayout from './layouts/base/BaseLayout';
 import { mainRoutes } from './routes';
 import './less/main.less';
-import { getInfoService } from './services';
+// import { getInfoService } from './services';
 import { updateInfo } from './store/info/actions';
 
 interface AppProps {
@@ -12,7 +12,6 @@ interface AppProps {
 }
 
 const App: React.FC<AppProps> = ({ updateInfo }) => {
-  let sw = true;
   return (
     <Switch>
       <Route
@@ -20,10 +19,7 @@ const App: React.FC<AppProps> = ({ updateInfo }) => {
         render={() => {
           const isLogin = !!localStorage.getItem('token');
           if (isLogin) {
-            if (sw) {
-              sw = false;
-              getInfoService().then(res => updateInfo(res));
-            }
+            // getInfoService().then(res => updateInfo(res));
             return <BaseLayout />;
           } else {
             return <Redirect to="/login" />;

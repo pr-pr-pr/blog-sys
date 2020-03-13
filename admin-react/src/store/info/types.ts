@@ -9,10 +9,15 @@ export interface InfoState {
 }
 
 export const UPDATE_INFO = 'UPDATE_INFO';
+export const CLEAR_INFO = 'CLEAR_INFO';
 
 interface UpdateUsernameAction {
   type: typeof UPDATE_INFO;
   payload: InfoState;
 }
 
-export type InfoActionTypes = UpdateUsernameAction;
+interface ClearInfoAction {
+  type: typeof CLEAR_INFO;
+}
+
+export type InfoActionTypes = UpdateUsernameAction | ClearInfoAction;

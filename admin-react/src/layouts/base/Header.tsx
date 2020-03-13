@@ -5,12 +5,19 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { InfoState } from '../../store/info/types';
 import { AppState } from '../../store';
+import { getInfoService } from '../../services';
+import { updateInfo } from '../../store/info/actions';
 
 interface HeaderProps {
   info: InfoState;
+  updateInfo: typeof updateInfo;
 }
 
-const Header: React.FC<HeaderProps> = ({ info }) => {
+const Header: React.FC<HeaderProps> = ({ info, updateInfo }) => {
+  if (!info.username) {
+    console.log('ss');
+    getInfoService().then(res => updateInfo(res));
+  }
   const menu = (
     <Menu>
       <Menu.Item>
@@ -43,6 +50,9 @@ const Header: React.FC<HeaderProps> = ({ info }) => {
   );
 };
 
-export default connect((state: AppState) => ({
-  info: state.info
-}))(Header);
+export default connect(
+  (state: AppState) => ({
+    info: state.info
+  }),
+  { updateInfo }
+)(Header);

@@ -1,4 +1,4 @@
-import { InfoState, InfoActionTypes, UPDATE_INFO } from './types';
+import { InfoState, InfoActionTypes, UPDATE_INFO, CLEAR_INFO } from './types';
 
 const initState: InfoState = {
   isAdmin: false,
@@ -14,6 +14,8 @@ export function infoReducer(state = initState, action: InfoActionTypes): InfoSta
   switch (action.type) {
     case UPDATE_INFO:
       return { ...state, ...action.payload };
+    case CLEAR_INFO:
+      return initState;
     default:
       return state;
   }

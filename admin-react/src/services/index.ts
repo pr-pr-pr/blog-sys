@@ -8,7 +8,7 @@ export interface LoginParamTypes {
 }
 
 export async function loginService(params: LoginParamTypes) {
-  const { token } = await request.post('auth/login', { params: paramsFilter(params) });
+  const { token } = await request.post('auth/login', paramsFilter(params));
   localStorage.setItem('token', token);
 }
 

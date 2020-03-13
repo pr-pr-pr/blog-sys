@@ -3,11 +3,11 @@ export const SERVER_HOST = process.env.NODE_ENV === 'development' ? 'http://127.
 export const tableDataDefault: TableData = {
   list: [],
   page: 1,
-  limit: 5,
+  limit: 10,
   total: 0
 };
 
-export const pagination = (tableData: TableData) => ({
+export const paginationConfig = (tableData: TableData) => ({
   current: tableData.page,
   pageSize: tableData.limit,
   total: tableData.total,
