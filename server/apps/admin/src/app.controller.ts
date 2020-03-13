@@ -1,16 +1,8 @@
-import {
-  Controller,
-  Get,
-  Post,
-  UseInterceptors,
-  UploadedFile,
-  BadRequestException,
-  UseGuards
-} from '@nestjs/common'
-import { AppService } from './app.service'
-import { FileInterceptor } from '@nestjs/platform-express'
-import { ApiOperation, ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { AuthGuard } from '@nestjs/passport'
+import { Controller, Get, Post, UseInterceptors, UploadedFile, BadRequestException, UseGuards } from '@nestjs/common';
+import { AppService } from './app.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiOperation, ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller()
 @ApiTags('其他')
@@ -19,7 +11,7 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return this.appService.getHello()
+    return this.appService.getHello();
   }
 
   @Post('upload')
@@ -33,8 +25,8 @@ export class AppController {
   })
   async upload(@UploadedFile('file') file) {
     if (!file) {
-      throw new BadRequestException('上传失败')
+      throw new BadRequestException('上传失败');
     }
-    return { path: file.path.replace(/\\/g, '/') }
+    return { path: file.path.replace(/\\/g, '/') };
   }
 }
