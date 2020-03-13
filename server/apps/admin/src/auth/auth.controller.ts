@@ -1,16 +1,8 @@
-import {
-  Controller,
-  Post,
-  Body,
-  UseGuards,
-  Req,
-  Get,
-  UnauthorizedException
-} from '@nestjs/common'
-import { ApiOperation, ApiTags, ApiBearerAuth } from '@nestjs/swagger'
-import { LoginDto } from '@app/common/dto/login.dto'
-import { AuthGuard } from '@nestjs/passport'
-import { JwtService } from '@nestjs/jwt'
+import { Controller, Post, Body, UseGuards, Req, Get, UnauthorizedException } from '@nestjs/common';
+import { ApiOperation, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { LoginDto } from '@app/common/dto/login.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('auth')
 @ApiTags('鉴权')
@@ -22,11 +14,11 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   async login(@Body() loginDto: LoginDto, @Req() req) {
     if (!req.user.isAdmin) {
-      throw new UnauthorizedException('没有权限')
+      throw new UnauthorizedException('没有权限');
     }
     return {
       token: this.jwtService.sign(String(req.user._id))
-    }
+    };
   }
 
   @Get('user')
@@ -34,6 +26,6 @@ export class AuthController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   async user(@Req() req) {
-    return req.user
+    return req.user;
   }
 }
