@@ -1,32 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Form, Input, Button, Radio, Upload, message } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { UploadChangeParam } from 'antd/lib/upload';
 import { uploadService } from '../../services';
 import { SERVER_HOST } from '../../config';
-import { addUserService, AddUserParamTypes } from '../../services/user';
+import { addUserService, UserParamTypes, getUserDetail, updateUserService } from '../../services/user';
 
-interface UserAddProps {
+interface UserModalProps {
+  id: string;
   visible: boolean;
-  close: () => void;
+  modalClose: () => void;
   modalSubmit: () => void;
 }
 
-const UserAdd: React.FC<UserAddProps> = ({ visible, close, modalSubmit }) => {
+const UserModal: React.FC<UserModalProps> = ({ visible, modalClose, modalSubmit, id }) => {
   const [imageUrl, setImageUrl] = useState('');
   const [imageLoading, setImageLoading] = useState(false);
+  const [formInitData, setFormInitData] = useState({ isAdmin: false });
+  const [sw, setSw] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
-  const submit = async (values: AddUserParamTypes) => {
-    values.avatar = imageUrl;
-    await addUserService(values);
-    message.success('添加成功');
-    modalSubmit();
-    close();
+  useEffect(() => {
+    if (visible && id && sw) {
+      getUserDetail(id).then(res => {
+        setSw(false);
+        res.avatar && setImageUrl(res.avatar);
+        form.setFieldsValue(res);
+      });
+    }
+  }, [form, visible, id, sw]);
+
+  const close = () => {
+    modalClose();
+    setImageUrl('');
+    setSw(true);
+    setLoading(false);
+    setFormInitData({ isAdmin: false });
+    form.resetFields();
   };
 
-  const handleCancel = () => {
-    form.resetFields();
+  const submit = async (values: UserParamTypes) => {
+    setLoading(true);
+    values.avatar = imageUrl;
+    if (!id) {
+      await addUserService(values);
+      message.success('添加成功');
+    } else {
+      await updateUserService(id, values);
+      message.success('修改成功');
+    }
+    modalSubmit();
     close();
   };
 
@@ -45,13 +69,13 @@ const UserAdd: React.FC<UserAddProps> = ({ visible, close, modalSubmit }) => {
   };
 
   return (
-    <Modal title="Title" visible={visible} footer={null} onCancel={handleCancel}>
+    <Modal forceRender title="Title" visible={visible} footer={null} onCancel={close}>
       <Form
         form={form}
-        onFinish={values => submit(values as AddUserParamTypes)}
+        onFinish={values => submit(values as UserParamTypes)}
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 20 }}
-        initialValues={{ isAdmin: false }}
+        initialValues={formInitData}
       >
         <Form.Item
           label="用户名"
@@ -62,18 +86,17 @@ const UserAdd: React.FC<UserAddProps> = ({ visible, close, modalSubmit }) => {
             { max: 32, message: '用户名不能超过 32 个字符' }
           ]}
         >
-          <Input />
+          <Input placeholder="设置用户名" />
         </Form.Item>
         <Form.Item
           label="密码"
           name="password"
           rules={[
-            { required: true, message: '请输入密码' },
             { min: 3, message: '密码不能少于 3 个字符' },
             { max: 32, message: '密码不能超过 32 个字符' }
           ]}
         >
-          <Input.Password />
+          <Input.Password placeholder="设置密码" />
         </Form.Item>
         <Form.Item label="角色" name="isAdmin">
           <Radio.Group>
@@ -90,7 +113,7 @@ const UserAdd: React.FC<UserAddProps> = ({ visible, close, modalSubmit }) => {
           <Input.TextArea />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 4 }}>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={loading}>
             提交
           </Button>
         </Form.Item>
@@ -99,4 +122,4 @@ const UserAdd: React.FC<UserAddProps> = ({ visible, close, modalSubmit }) => {
   );
 };
 
-export default UserAdd;
+export default UserModal;
