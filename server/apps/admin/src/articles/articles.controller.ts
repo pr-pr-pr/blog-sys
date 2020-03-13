@@ -57,9 +57,11 @@ export class ArticlesController {
       .catch(() => {
         throw new BadRequestException('参数错误')
       })
-    const total = await this.articleModel.countDocuments(where).catch(() => {
-      throw new BadRequestException('参数错误')
-    })
+    const total = await this.articleModel
+      .countDocuments({ where })
+      .catch(() => {
+        throw new BadRequestException('参数错误')
+      })
     return { list: articles, page, limit, total }
   }
 
