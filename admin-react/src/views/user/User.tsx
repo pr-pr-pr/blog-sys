@@ -15,6 +15,7 @@ const User: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalSubmit, setModalSubmit] = useState(false);
+  const [modalTitle, setModalTitle] = useState('');
   const [modalId, setModalId] = useState('');
 
   useEffect(() => {
@@ -31,6 +32,7 @@ const User: React.FC = () => {
   }, [tableData.page, tableData.limit, sortParams, searchKey, modalSubmit]);
 
   const openEditModal = ({ id }: { id?: string }) => {
+    setModalTitle('编辑用户');
     setModalId(id!);
     setModalVisible(true);
   };
@@ -76,9 +78,15 @@ const User: React.FC = () => {
     <div>
       <Row gutter={[0, 10]}>
         <Col>
-          <Button type="primary" size="small" onClick={() => setModalVisible(true)}>
-            <PlusOutlined />
-            添加
+          <Button
+            type="primary"
+            size="small"
+            onClick={() => {
+              setModalTitle('添加用户');
+              setModalVisible(true);
+            }}
+          >
+            <PlusOutlined /> 添加
           </Button>
         </Col>
         <Col offset={1}>
@@ -95,6 +103,7 @@ const User: React.FC = () => {
         size="small"
       />
       <UserModal
+        title={modalTitle}
         id={modalId}
         visible={modalVisible}
         modalClose={modalClose}

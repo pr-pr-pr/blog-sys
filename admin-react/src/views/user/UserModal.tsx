@@ -7,13 +7,14 @@ import { SERVER_HOST } from '../../config';
 import { addUserService, UserParamTypes, getUserDetailService, updateUserService } from '../../services/user';
 
 interface UserModalProps {
+  title: string;
   id: string;
   visible: boolean;
   modalClose: () => void;
   modalSubmit: () => void;
 }
 
-const UserModal: React.FC<UserModalProps> = ({ visible, modalClose, modalSubmit, id }) => {
+const UserModal: React.FC<UserModalProps> = ({ title, visible, modalClose, modalSubmit, id }) => {
   const [imageUrl, setImageUrl] = useState('');
   const [imageLoading, setImageLoading] = useState(false);
   const [formInitData, setFormInitData] = useState({ isAdmin: false });
@@ -69,7 +70,7 @@ const UserModal: React.FC<UserModalProps> = ({ visible, modalClose, modalSubmit,
   };
 
   return (
-    <Modal forceRender title="Title" visible={visible} footer={null} onCancel={close}>
+    <Modal forceRender title={title} visible={visible} footer={null} onCancel={close}>
       <Form
         form={form}
         onFinish={values => submit(values as UserParamTypes)}

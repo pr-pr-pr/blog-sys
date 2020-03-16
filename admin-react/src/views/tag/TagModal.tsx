@@ -3,14 +3,15 @@ import { Modal, Form, Input, Button, message } from 'antd';
 import { addTagService, TagParamTypes, getTagDetailService, updateTagService } from '../../services/tag';
 
 interface TagModalProps {
+  title: string;
   id: string;
   visible: boolean;
   modalClose: () => void;
   modalSubmit: () => void;
 }
 
-const TagModal: React.FC<TagModalProps> = ({ visible, modalClose, modalSubmit, id }) => {
-  const [formInitData, setFormInitData] = useState({ isAdmin: false });
+const TagModal: React.FC<TagModalProps> = ({ title, visible, modalClose, modalSubmit, id }) => {
+  const [formInitData, setFormInitData] = useState({});
   const [sw, setSw] = useState(true);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
@@ -28,7 +29,7 @@ const TagModal: React.FC<TagModalProps> = ({ visible, modalClose, modalSubmit, i
     modalClose();
     setSw(true);
     setLoading(false);
-    setFormInitData({ isAdmin: false });
+    setFormInitData({});
     form.resetFields();
   };
 
@@ -46,7 +47,7 @@ const TagModal: React.FC<TagModalProps> = ({ visible, modalClose, modalSubmit, i
   };
 
   return (
-    <Modal forceRender title="Title" visible={visible} footer={null} onCancel={close}>
+    <Modal forceRender title={title} visible={visible} footer={null} onCancel={close}>
       <Form
         form={form}
         onFinish={values => submit(values as TagParamTypes)}
