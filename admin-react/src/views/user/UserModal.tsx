@@ -4,7 +4,7 @@ import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { UploadChangeParam } from 'antd/lib/upload';
 import { uploadService } from '../../services';
 import { SERVER_HOST } from '../../config';
-import { addUserService, UserParamTypes, getUserDetail, updateUserService } from '../../services/user';
+import { addUserService, UserParamTypes, getUserDetailService, updateUserService } from '../../services/user';
 
 interface UserModalProps {
   id: string;
@@ -23,7 +23,7 @@ const UserModal: React.FC<UserModalProps> = ({ visible, modalClose, modalSubmit,
 
   useEffect(() => {
     if (visible && id && sw) {
-      getUserDetail(id).then(res => {
+      getUserDetailService(id).then(res => {
         setSw(false);
         res.avatar && setImageUrl(res.avatar);
         form.setFieldsValue(res);

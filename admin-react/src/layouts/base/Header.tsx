@@ -15,7 +15,6 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ info, updateInfo }) => {
   if (!info.username) {
-    console.log('ss');
     getInfoService().then(res => updateInfo(res));
   }
   const menu = (

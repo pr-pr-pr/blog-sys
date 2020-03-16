@@ -38,7 +38,7 @@ export async function addUserService(params: UserParamTypes) {
   await request.post('users', paramsFilter(params));
 }
 
-export async function getUserDetail(id: string): Promise<GetInfoResultTypes> {
+export async function getUserDetailService(id: string): Promise<GetInfoResultTypes> {
   const res: GetInfoResultTypes = await request.get('users/' + id);
   return {
     isAdmin: res.isAdmin,
@@ -53,4 +53,8 @@ export async function getUserDetail(id: string): Promise<GetInfoResultTypes> {
 
 export async function updateUserService(id: string, params: UserParamTypes) {
   await request.put('users/' + id, paramsFilter(params));
+}
+
+export async function deleteUserService(id: string) {
+  await request.delete('users/' + id);
 }

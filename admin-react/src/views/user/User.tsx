@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Row, Input, Col } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Table, Button, Row, Input, Col, message } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/lib/table';
-import { getUserListService } from '../../services/user';
-import { roleFilter } from '../../utils/filters';
 import { tableDataDefault, paginationConfig } from '../../config';
+import { TableAction } from '../../components';
+import { roleFilter } from '../../utils/filters';
+import { getUserListService, deleteUserService } from '../../services/user';
 import UserModal from './UserModal';
 
-const UserList: React.FC = () => {
+const User: React.FC = () => {
   const [tableData, setTableData] = useState<TableData>(tableDataDefault);
   const [sortParams, setSortParams] = useState<SortParams>({});
   const [searchKey, setSearchKey] = useState('');
@@ -34,6 +35,12 @@ const UserList: React.FC = () => {
     setModalVisible(true);
   };
 
+  const deleteConfirm = async ({ id }: { id?: string }) => {
+    await deleteUserService(id!);
+    message.success('删除成功');
+    setModalSubmit(!modalSubmit);
+  };
+
   const modalClose = () => {
     setModalId('');
     setModalVisible(false);
@@ -49,19 +56,9 @@ const UserList: React.FC = () => {
       title: '操作',
       key: 'actions',
       width: 100,
-      render: (text, record) => {
-        return (
-          <div>
-            <Button type="primary" size="small" onClick={() => openEditModal(record)}>
-              <EditOutlined />
-            </Button>
-            &nbsp;
-            <Button type="danger" size="small">
-              <DeleteOutlined />
-            </Button>
-          </div>
-        );
-      }
+      render: (text, record) => (
+        <TableAction record={record} openEditModal={openEditModal} deleteConfirm={deleteConfirm} />
+      )
     }
   ];
 
@@ -107,4 +104,4 @@ const UserList: React.FC = () => {
   );
 };
 
-export default UserList;
+export default User;
