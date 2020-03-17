@@ -65,8 +65,19 @@ export async function addArticleService(params: ArticleParamTypes) {
   await request.post('articles', paramsFilter(params));
 }
 
-export async function getArticleDetailService(id: string): Promise<GetArticleResponseTypes> {
-  const res: GetArticleResponseTypes = await request.get('articles/' + id);
+export interface GetArticleDetailResponseTypes {
+  id: string;
+  title: string;
+  summary: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  tags: GetTagResultTypes[];
+  author: string;
+}
+
+export async function getArticleDetailService(id: string): Promise<GetArticleResultTypes> {
+  const res: GetArticleDetailResponseTypes = await request.get('articles/' + id);
   return {
     id: res.id,
     title: res.title,
@@ -74,22 +85,8 @@ export async function getArticleDetailService(id: string): Promise<GetArticleRes
     content: res.content,
     createdAt: res.createdAt,
     updatedAt: res.updatedAt,
-    tags: res.tags.map(
-      (j): GetTagResultTypes => ({
-        id: j.id,
-        name: j.name,
-        description: j.description
-      })
-    ),
-    author: {
-      isAdmin: res.author.isAdmin,
-      id: res.author.id,
-      username: res.author.username,
-      avatar: res.author.avatar,
-      summary: res.author.summary,
-      createdAt: res.author.createdAt,
-      updatedAt: res.author.updatedAt
-    }
+    tags: res.tags.map(i => i.id),
+    author: res.author
   };
 }
 

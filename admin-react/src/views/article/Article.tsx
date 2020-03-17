@@ -166,6 +166,7 @@ const Article: React.FC = () => {
         modalClose={modalClose}
         modalSubmit={() => setModalSubmit(!modalSubmit)}
         userList={userList}
+        tagList={tagList}
       />
     </div>
   );

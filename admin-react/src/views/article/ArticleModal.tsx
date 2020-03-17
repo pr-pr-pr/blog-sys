@@ -20,7 +20,7 @@ import {
   getArticleDetailService,
   updateArticleService
 } from '../../services/article';
-import { GetAllUserResultTypes } from '../../services/all';
+import { GetAllUserResultTypes, GetAllTagResultTypes } from '../../services/all';
 
 interface ArticleModalProps {
   title: string;
@@ -29,6 +29,7 @@ interface ArticleModalProps {
   modalClose: () => void;
   modalSubmit: () => void;
   userList: GetAllUserResultTypes[];
+  tagList: GetAllTagResultTypes[];
 }
 
 const mdParser = new MarkdownIt({
@@ -54,25 +55,35 @@ const mdParser = new MarkdownIt({
   .use(mark)
   .use(tasklists);
 
-const ArticleModal: React.FC<ArticleModalProps> = ({ title, visible, modalClose, modalSubmit, id, userList }) => {
+const ArticleModal: React.FC<ArticleModalProps> = ({
+  title,
+  visible,
+  modalClose,
+  modalSubmit,
+  id,
+  userList,
+  tagList
+}) => {
   const [formInitData, setFormInitData] = useState({});
   const [sw, setSw] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [mdEditor, setMdEditor] = useState<any>();
   const [form] = Form.useForm();
-  let mdEditor: any = null;
 
   useEffect(() => {
     if (visible && id && sw) {
       getArticleDetailService(id).then(res => {
         setSw(false);
         console.log(res);
-        // form.setFieldsValue(res);
+        form.setFieldsValue(res);
+        mdEditor.setText(res.content);
       });
     }
-  }, [form, visible, id, sw]);
+  }, [form, visible, id, sw, mdEditor]);
 
   const close = () => {
     modalClose();
+    mdEditor.setText('');
     setSw(true);
     setLoading(false);
     setFormInitData({});
@@ -80,32 +91,32 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ title, visible, modalClose,
   };
 
   const submit = async (values: ArticleParamTypes) => {
-    values.content = 'test111';
-    console.log(values);
-    console.log(mdEditor);
-    return;
-    setLoading(true);
-    if (!id) {
-      await addArticleService(values);
-      message.success('添加成功');
-    } else {
-      await updateArticleService(id, values);
-      message.success('修改成功');
+    try {
+      values.content = mdEditor.getMdValue();
+      if (!values.content) {
+        message.error('文章内容不能为空');
+        return;
+      }
+      setLoading(true);
+      if (!id) {
+        await addArticleService(values);
+        message.success('添加成功');
+      } else {
+        await updateArticleService(id, values);
+        message.success('修改成功');
+      }
+      modalSubmit();
+      close();
+    } catch {
+      setLoading(false);
     }
-    modalSubmit();
-    close();
-  };
-
-  const handleEditorChange = ({ html, text }: { text: string; html: string }) => {
-    console.log(text);
-    console.log(html);
   };
 
   return (
     <Modal
       className="article-modal"
+      width="80%"
       title={title}
-      mask={false}
       visible={visible}
       footer={null}
       onCancel={close}
@@ -114,28 +125,27 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ title, visible, modalClose,
       <Form
         form={form}
         onFinish={values => submit(values as ArticleParamTypes)}
-        labelCol={{ span: 4 }}
-        wrapperCol={{ span: 20 }}
         initialValues={formInitData}
         size="small"
+        layout="horizontal"
+        wrapperCol={{ span: 20 }}
       >
-        <Row>
+        <Row gutter={10}>
           <Col span={8}>
-            <Form.Item
-              label="标题"
-              name="title"
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 18 }}
-              rules={[{ required: true, message: '请输入标文章标题' }]}
-            >
-              <Input placeholder="设置文章标题" />
+            <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入标文章标题' }]}>
+              <Input placeholder="设置文章标题" autoComplete="off" />
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item label="作者" name="author" labelCol={{ span: 4 }} wrapperCol={{ span: 18 }}>
+            <Form.Item
+              label="作者"
+              name="author"
+              rules={[{ required: true, message: '请选择作者' }]}
+              wrapperCol={{ span: 15 }}
+            >
               <Select
                 style={{ width: '100%' }}
-                placeholder="根据用户筛选"
+                placeholder="选择作者"
                 filterOption={(input, option) => option!.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 allowClear
                 showSearch
@@ -148,26 +158,49 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ title, visible, modalClose,
               </Select>
             </Form.Item>
           </Col>
-          <Col span={12}>
-            <Form.Item label="摘要" name="summary" labelCol={{ span: 2 }}>
-              <Input />
+          <Col span={8}>
+            <Form.Item label="标签" name="tags" rules={[{ required: true, message: '请选择标签' }]}>
+              <Select
+                style={{ width: '100%' }}
+                mode="multiple"
+                placeholder="选择标签"
+                filterOption={(input, option) => option!.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                allowClear
+                showSearch
+              >
+                {tagList.map(i => (
+                  <Select.Option key={i.id} value={i.id}>
+                    {i.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <Form.Item
+              label="摘要"
+              name="summary"
+              rules={[{ required: true, message: '请输入摘要' }]}
+              wrapperCol={{ span: 22 }}
+            >
+              <Input autoComplete="off" />
             </Form.Item>
           </Col>
         </Row>
         <div className="editor">
           <MdEditor
-            ref={node => (mdEditor = node)}
-            style={{ height: '100%', width: '100%' }}
-            value=""
+            ref={node => setMdEditor(node)}
+            style={{ height: '500px', width: '100%' }}
             renderHTML={text => mdParser.render(text)}
-            onChange={handleEditorChange}
           />
         </div>
-        <Form.Item style={{ textAlign: 'center' }} wrapperCol={{ span: 24 }}>
-          <Button type="primary" size="large" htmlType="submit" loading={loading}>
+        <div style={{ textAlign: 'center', marginTop: 10 }}>
+          <Button type="primary" size="middle" htmlType="submit" loading={loading}>
             提交
           </Button>
-        </Form.Item>
+        </div>
       </Form>
     </Modal>
   );

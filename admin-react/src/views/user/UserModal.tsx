@@ -42,17 +42,21 @@ const UserModal: React.FC<UserModalProps> = ({ title, visible, modalClose, modal
   };
 
   const submit = async (values: UserParamTypes) => {
-    setLoading(true);
-    values.avatar = imageUrl;
-    if (!id) {
-      await addUserService(values);
-      message.success('添加成功');
-    } else {
-      await updateUserService(id, values);
-      message.success('修改成功');
+    try {
+      setLoading(true);
+      values.avatar = imageUrl;
+      if (!id) {
+        await addUserService(values);
+        message.success('添加成功');
+      } else {
+        await updateUserService(id, values);
+        message.success('修改成功');
+      }
+      modalSubmit();
+      close();
+    } catch {
+      setLoading(false);
     }
-    modalSubmit();
-    close();
   };
 
   const uploadButton = (
@@ -87,7 +91,7 @@ const UserModal: React.FC<UserModalProps> = ({ title, visible, modalClose, modal
             { max: 32, message: '用户名不能超过 32 个字符' }
           ]}
         >
-          <Input placeholder="设置用户名" />
+          <Input placeholder="设置用户名" autoComplete="off" />
         </Form.Item>
         <Form.Item
           label="密码"
@@ -97,7 +101,7 @@ const UserModal: React.FC<UserModalProps> = ({ title, visible, modalClose, modal
             { max: 32, message: '密码不能超过 32 个字符' }
           ]}
         >
-          <Input.Password placeholder="设置密码" />
+          <Input.Password placeholder="设置密码" autoComplete="new-password" />
         </Form.Item>
         <Form.Item label="角色" name="isAdmin">
           <Radio.Group>

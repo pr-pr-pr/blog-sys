@@ -34,16 +34,20 @@ const TagModal: React.FC<TagModalProps> = ({ title, visible, modalClose, modalSu
   };
 
   const submit = async (values: TagParamTypes) => {
-    setLoading(true);
-    if (!id) {
-      await addTagService(values);
-      message.success('添加成功');
-    } else {
-      await updateTagService(id, values);
-      message.success('修改成功');
+    try {
+      setLoading(true);
+      if (!id) {
+        await addTagService(values);
+        message.success('添加成功');
+      } else {
+        await updateTagService(id, values);
+        message.success('修改成功');
+      }
+      modalSubmit();
+      close();
+    } catch {
+      setLoading(false);
     }
-    modalSubmit();
-    close();
   };
 
   return (
@@ -56,7 +60,7 @@ const TagModal: React.FC<TagModalProps> = ({ title, visible, modalClose, modalSu
         initialValues={formInitData}
       >
         <Form.Item label="标签名" name="name" rules={[{ required: true, message: '请输入标签名' }]}>
-          <Input placeholder="设置标签名" />
+          <Input placeholder="设置标签名" autoComplete="off" />
         </Form.Item>
         <Form.Item label="说明" name="description">
           <Input.TextArea />
