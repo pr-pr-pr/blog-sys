@@ -59,7 +59,6 @@ const Article: React.FC = () => {
 
   const columns: ColumnsType<{}> = [
     { title: '文章标题', dataIndex: 'title', width: 180, sorter: true },
-    { title: '简介', dataIndex: 'summary' },
     { title: '作者', dataIndex: 'author', width: 100, sorter: true },
     {
       title: '标签',
