@@ -1,6 +1,6 @@
-import { Login, NotFound, Welcome, User, Article, Tag } from '../views/index';
+import { Login, NotFound, User, Article, Tag } from '../views/index';
 import { RouteProps } from 'react-router-dom';
-import { HomeOutlined, UserOutlined, FileTextOutlined, TagsOutlined } from '@ant-design/icons';
+import { UserOutlined, FileTextOutlined, TagsOutlined } from '@ant-design/icons';
 
 interface IRoute extends RouteProps {
   title?: string;
@@ -13,7 +13,6 @@ export const mainRoutes: RouteProps[] = [
 ];
 
 export const adminRoutes: IRoute[] = [
-  { path: '/admin/welcome', component: Welcome, exact: true, title: '欢迎', icon: HomeOutlined },
   { path: '/admin/user', component: User, exact: true, title: '用户管理', icon: UserOutlined },
   { path: '/admin/article', component: Article, exact: true, title: '文章管理', icon: FileTextOutlined },
   { path: '/admin/tag', component: Tag, exact: true, title: '标签管理', icon: TagsOutlined }

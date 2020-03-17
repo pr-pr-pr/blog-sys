@@ -10,10 +10,6 @@ export const NotFound = loadable(() => import('./exception/NotFound'), {
   fallback: <Loading />
 });
 
-export const Welcome = loadable(() => import('./welcome/Welcome'), {
-  fallback: <Loading />
-});
-
 export const User = loadable(() => import('./user/User'), {
   fallback: <Loading />
 });
