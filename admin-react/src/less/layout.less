@@ -1,0 +1,51 @@
+#layout {
+  height: 100%;
+
+  #sidebar {
+    .container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 64px;
+        line-height: 64px;
+        font-size: 20px;
+        font-weight: bold;
+        user-select: none;
+
+        img {
+          margin-left: -10%;
+          height: 64%;
+        }
+      }
+
+      .menu {
+        flex: 1;
+      }
+    }
+  }
+
+  #header {
+    background-color: #f9f9f9;
+    text-align: right;
+  }
+
+  #content {
+    padding: 16px;
+    display: flex;
+
+    > .card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  #footer {
+    text-align: center;
+  }
+}
