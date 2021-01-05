@@ -5,7 +5,7 @@
   "dependencies": {
     "@loadable/component": "^5.12.0",
     "antd": "^4.0.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "highlight.js": "^9.18.1",
     "markdown-it": "^10.0.0",
     "markdown-it-abbr": "^1.0.4",
